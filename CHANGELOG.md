@@ -14,6 +14,17 @@ All notable changes to this project will be documented in this file.
 - Configured Vite proxy for API requests
 - Added environment variables for API keys
 - Updated package.json with necessary dependencies and scripts
+- Added graph-file system integration: clicking a file node in the graph opens the file in Monaco Code Viewer
+- Added file explorer synchronization: selecting a file in the explorer updates graph selection and code viewer
+- Enhanced graph state management to track selected file path
+- Made file nodes in the graph clickable with visual feedback
+- Fixed terminal WebSocket instability with exponential backoff reconnect (already implemented)
+- Fixed xterm.js dimensions error with requestAnimationFrame protection in resize handler
+- Fixed CodePanel API route to use /api/file endpoint with proper Vite proxy configuration
+- Fixed graph autosave 404 errors by updating backend routes to use /api/ prefix
+- Updated project architecture documentation to reflect terminal-first, model-agnostic design
+- Removed all references to built-in AI providers (Ollama, OpenRouter, Anthropic) from codebase and documentation
+- Created MASTER_PROMPT.md as authoritative continuation guide for future development sessions
 
 ## [1.0.0] - 2026-05-07
 ### Added

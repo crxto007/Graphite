@@ -3,7 +3,7 @@ const http = require('http');
 const cors = require('cors');
 const WebSocket = require('ws');
 const { registerFileRoutes } = require('./files');
-const { registerAI } = require('./ai/router');
+const { setupTerminal } = require('./terminal');
 
 const app = express();
 const server = http.createServer(app);
@@ -14,7 +14,9 @@ app.use(express.json());
 
 // Register routes
 registerFileRoutes(app);
-registerAI(app, wss);
+wss.on('connection', (ws) => {
+  setupTerminal(ws);
+});
 
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {

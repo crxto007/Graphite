@@ -1,46 +1,73 @@
-const { spawn } = require('node-pty');
+const { spawn: cpSpawn } = require('child_process');
 const os = require('os');
 
+/**
+ * Terminal manager that handles shell spawning and WebSocket communication
+ */
 function setupTerminal(ws) {
-  // Determine shell based on OS
-  const shell = process.platform === 'win32' ? 'cmd.exe' : process.platform === 'darwin' ? 'zsh' : 'bash';
+  console.log('--- Starting Terminal Session ---');
 
-  // Create pty
-  const pty = spawn(shell, [], {
-    name: 'xterm-color',
-    cols: 80,
-    rows: 24,
-    cwd: process.env.HOME,
-    env: process.env
-  });
+  const shell = process.env.SHELL || (process.platform === 'darwin' ? '/bin/zsh' : process.platform === 'win32' ? 'powershell.exe' : '/bin/bash');
+  console.log(`Using shell: ${shell}`);
 
-  // Handle pty output
-  pty.on('data', (data) => {
-    // Send data to client
-    ws.send(JSON.stringify({ type: 'output', data }));
-  });
+  try {
+    // We are bypassing node-pty and using standard child_process.spawn
+    // This avoids the "posix_spawnp failed" error entirely.
+    const ptyProcess = cpSpawn(shell, [], {
+      cwd: process.cwd(),
+      env: { ...process.env, TERM: 'xterm-256color' },
+      shell: true
+    });
 
-  // Handle messages from client
-  ws.on('message', (data) => {
-    const message = JSON.parse(data);
-    if (message.type === 'input') {
-      pty.write(message.data);
-    } else if (message.type === 'resize') {
-      pty.resize(message.cols, message.rows);
+    console.log('Successfully spawned shell via child_process');
+
+    // Pipe output to WebSocket
+    ptyProcess.stdout.on('data', (data) => {
+      if (ws.readyState === 1) {
+        ws.send(JSON.stringify({ type: 'output', data: data.toString() }));
+      }
+    });
+
+    ptyProcess.stderr.on('data', (data) => {
+      if (ws.readyState === 1) {
+        ws.send(JSON.stringify({ type: 'output', data: data.toString() }));
+      }
+    });
+
+    // Handle input from WebSocket
+    ws.on('message', (message) => {
+      try {
+        const messageStr = message.toString();
+        const parsed = JSON.parse(messageStr);
+
+        if (parsed.type === 'input') {
+          ptyProcess.stdin.write(parsed.data);
+        }
+      } catch (e) {
+        // If not JSON, write raw string
+        ptyProcess.stdin.write(message.toString());
+      }
+    });
+
+    ws.on('close', () => {
+      console.log('Terminal client closed, killing shell');
+      ptyProcess.kill();
+    });
+
+    ptyProcess.on('exit', (code) => {
+      console.log(`Shell exited with code ${code}`);
+      if (ws.readyState === 1) {
+        ws.send(JSON.stringify({ type: 'output', data: `\r\n[Process exited with code ${code}]\r\n` }));
+        ws.close();
+      }
+    });
+
+  } catch (error) {
+    console.error('Critical terminal spawn error:', error);
+    if (ws.readyState === 1) {
+      ws.send(JSON.stringify({ type: 'output', data: `Critical Error spawning shell: ${error.message}\r\n` }));
     }
-  });
-
-  // Handle client disconnect
-  ws.on('close', () => {
-    pty.kill();
-  });
-
-  // Handle pty exit
-  pty.on('exit', () => {
-    ws.close();
-  });
-
-  return pty;
+  }
 }
 
 module.exports = { setupTerminal };
