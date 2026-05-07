@@ -103,13 +103,6 @@ In Progress:
 
 ## Design Philosophy
 
-Graphite follows a calm, engineering-first UI philosophy inspired by:
-- VS Code
-- Zerodha Kite
-- Linear
-- listmonk
-- modern infrastructure tooling
-
 The interface is designed to:
 - reduce cognitive load
 - prioritize clarity
