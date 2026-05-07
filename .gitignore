@@ -1,0 +1,36 @@
+# Dependencies
+node_modules/
+dist/
+
+# Environment variables
+.env
+
+# Logs
+logs
+*.log
+
+# Runtime data
+pids
+*.pid
+*.seed
+
+# Coverage reports
+coverage/
+lcov.info
+
+# Temporary files
+*.tmp
+*.temp
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Build outputs
+/build
