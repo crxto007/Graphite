@@ -13,7 +13,6 @@ All notable changes to this project will be documented in this file.
 - Set up Zustand stores for state management
 - Configured Vite proxy for API requests
 - Added environment variables for API keys
-- Updated package.json with necessary dependencies and scripts
 - Added graph-file system integration: clicking a file node in the graph opens the file in Monaco Code Viewer
 - Added file explorer synchronization: selecting a file in the explorer updates graph selection and code viewer
 - Enhanced graph state management to track selected file path
@@ -25,6 +24,15 @@ All notable changes to this project will be documented in this file.
 - Updated project architecture documentation to reflect terminal-first, model-agnostic design
 - Removed all references to built-in AI providers (Ollama, OpenRouter, Anthropic) from codebase and documentation
 - Created MASTER_PROMPT.md as authoritative continuation guide for future development sessions
+- Implemented Phase 5: Graph-File Integration with workflow execution capabilities
+  - Added file watcher system with debounce for efficient file monitoring
+  - Implemented parser system for detecting file changes and workflow triggers
+  - Added WebSocket-based workflow execution with visualization
+  - Enhanced graph store with workflow state management
+  - Added workflow execution controls (play, pause, stop, step)
+  - Implemented workflow testing framework with descriptors
+  - Added utility functions for file operations and workflow management
+  - Created test suites for workflow execution and file watching systems
 
 ## [1.0.0] - 2026-05-07
 ### Added

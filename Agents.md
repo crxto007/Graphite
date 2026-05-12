@@ -37,12 +37,23 @@
 - Code viewer background: #1E1E2E (dark only for Monaco panel)
 
 ## Folder Descriptions
-- backend/: Express server, WebSocket setup, file operations
+- backend/: Express server, WebSocket setup, file operations, workflow execution system
 - src/: Main React application code
 - src/components/: Reusable UI components (chat input, node types, agent log, settings panel, status bar)
 - src/panels/: The three main panels (terminal, graph, code)
-- src/store/: Zustand stores for graph state and settings
+- src/store/: Zustand stores for graph state, settings, and WebSocket connections
 - public/: Static assets (if any)
+- src/hooks/: Custom React hooks (including useWebSocket)
+- src/utils/: Utility functions for file operations and workflow management
+
+## Recent Updates (Phase 5)
+- Implemented comprehensive graph-file integration system
+- Added file watcher with debounce for efficient change detection
+- Created parser system for workflow triggering and analysis
+- Built WebSocket-based workflow execution with real-time visualization
+- Enhanced state management with workflow persistence and control
+- Added testing framework for workflow execution and file watching
+- Implemented utility modules for file operations and workflow management
 
 ## Known Issues Reference
 - node-pty fails to install on Windows — requires Python and Visual Studio Build Tools. Fix: run npm install --global windows-build-tools as administrator first
