@@ -2,11 +2,18 @@ import React, { useEffect, useRef } from 'react';
 import { Terminal } from 'xterm';
 import { FitAddon } from 'xterm-addon-fit';
 import 'xterm/css/xterm.css';
+import { useGraphStore } from '../store/graphStore';
+import { useWebSocketStore } from '../store/webSocketStore';
 
 export default function TerminalPanel() {
   const terminalRef = useRef(null);
   const xtermRef = useRef(null);
   const wsRef = useRef(null);
+
+  // Get state and setters from Zustand store
+  const upsertNode = useGraphStore(state => state.upsertNode);
+  const upsertEdge = useGraphStore(state => state.upsertEdge);
+  const removeNode = useGraphStore(state => state.removeNode);
 
   useEffect(() => {
     if (!terminalRef.current) return;
@@ -52,15 +59,24 @@ export default function TerminalPanel() {
         console.log('Terminal WebSocket connected');
         retryCount = 0;
         ws.send(JSON.stringify({ type: 'ready' }));
+        useWebSocketStore.getState().setWebSocket(ws); // Store the WebSocket instance
+        startPing();
       };
 
       ws.onmessage = (event) => {
         try {
           const data = JSON.parse(event.data);
+
+          // Handle terminal output only
           if (data.type === 'output') {
             term.write(data.data);
+          } else {
+            // If it's not a recognized type, just write it to the terminal
+            // This could be any other unexpected message from the backend
+            term.write(event.data);
           }
         } catch (e) {
+          // If not JSON, write raw string
           term.write(event.data);
         }
       };
@@ -77,6 +93,21 @@ export default function TerminalPanel() {
       };
 
       return ws;
+    };
+
+    let pingInterval;
+    const startPing = () => {
+      pingInterval = setInterval(() => {
+        if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
+          wsRef.current.send(JSON.stringify({ type: 'ping' }));
+        }
+      }, 20000); // Send ping every 20 seconds
+    };
+
+    const stopPing = () => {
+      if (pingInterval) {
+        clearInterval(pingInterval);
+      }
     };
 
     const ws = connect();

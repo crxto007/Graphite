@@ -40,7 +40,7 @@ function setupTerminal(ws) {
         const messageStr = message.toString();
         const parsed = JSON.parse(messageStr);
 
-        if (parsed.type === 'input') {
+        if (parsed.type === 'input' || parsed.type === 'workflow-command') {
           ptyProcess.stdin.write(parsed.data);
         }
       } catch (e) {

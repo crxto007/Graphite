@@ -5,6 +5,8 @@
 - **AI System:** REMOVED (User decided to use Claude Code directly in the terminal)
 - **Phase 4 (Interface Panels):** COMPLETED ✅
 - **Phase 5 (Graph-File Integration):** COMPLETED ✅
+- **Phase 6 (Workflow Execution):** COMPLETED ✅
+- **Phase 7 (UI/UX Polish & Performance Optimization):** IN PROGRESS ←
 
 ## What is Working
 - **Layout**: Professional IDE layout (Explorer $\to$ Graph $\to$ Code $\to$ Terminal) with resizable panels.
@@ -12,16 +14,17 @@
 - **Terminal**: Stable WebSocket shell integration using `child_process.spawn` (compatible with macOS).
 - **Code Viewer**: Monaco Editor integration with a dark theme and lazy loading.
 - **Graph Canvas**: React Flow integration with custom node types.
-- **File System**: Backend API for reading/writing files and saving/loading graph state.
+- **File System**: Backend API for reading/writing files and saving/loading gate state.
 - **Design System**: Clean, white/grey aesthetic evolving toward VS Code-inspired professional desktop app.
 - **Graph-File Integration**: Clicking a file node in the graph opens the file in the Monaco Code Viewer.
 - **File Explorer Sync**: Selecting a file in the File Explorer updates the graph selection and Code Viewer.
 - **WebSocket Communication**: Stable bidirectional communication between frontend and backend.
-- **Graph Persistence**: Auto-save and load of graph state to/from project.graph.json.
+- **Graph Persistence**: Auto-save and load of gate state to/from project.graph.json.
 - **Terminal Input/Output**: Full terminal interaction via WebSocket.
 - **File Loading**: Dynamic file fetching and display in Monaco Editor.
 - **Panel Resizing**: smooth, intuitive resizing of all panels.
 - **Selected File Tracking**: Graph state maintains currently selected file path.
+- **Workflow Execution**: Execute terminal commands from graph nodes via "Run Workflow" button with visualization and control.
 
 ## Decisions Made
 - **AI-Free UI**: Removed all internal AI providers, settings panels, and status bars to avoid redundancy with Claude Code.
@@ -61,9 +64,7 @@
 └── PROGRESS.md
 
 ## Next Steps
-- Implementation of the "Run Workflow" logic in the Graph Panel.
-- Workflow execution visualization and control.
-- Final UI/UX polish and performance optimization.
+- Continue UI/UX refinements and performance monitoring.
 
 ## Environment Snapshot
 - OS: macOS

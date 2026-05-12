@@ -1,7 +1,7 @@
 # MASTER_PROMPT.md - Graphite Visual IDE Development Guidelines
 
 ## Project Philosophy
-Graphite is a local-first visual IDE that combines a real terminal, a live software graph, and a code inspector. It is NOT a chatbot wrapper, generic AI IDE, simple workflow editor, or NotebookLM clone. Instead, it is a visual runtime environment for understanding, navigating, and executing software systems while coding with external AI agents accessed through the terminal.
+Graphite is a local-first visual IDE that combines a real terminal, a live software graph, and a code inspector. It is NOT a chatbot wrapper, generic AI IDE, simple workflow editor. Instead, it is a visual runtime environment for understanding, navigating, and executing software systems while coding with external AI agents accessed through the terminal.
 
 ## Core Architecture
 - **Terminal-First Design**: The terminal is the intelligence layer where external AI agents operate (Claude Code, Gemini CLI, etc.)
